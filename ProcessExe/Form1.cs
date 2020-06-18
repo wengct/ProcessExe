@@ -41,6 +41,7 @@ namespace ProcessExe
                 p.StartInfo.FileName = this.filePath.Text;
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.System);
                 if (!string.IsNullOrEmpty(this.domain.Text) && !string.IsNullOrEmpty(this.userName.Text) && !string.IsNullOrEmpty(this.password.Text))
                 {
                     p.StartInfo.Domain = this.domain.Text;
@@ -55,7 +56,10 @@ namespace ProcessExe
                 string now = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
                 writeResult(now + "-[" + processName + "]開始執行...");
                 writeResult(now + "-[" + processName + "]參數：" + Argu.Text);
-                p.StartInfo.Arguments = Argu.Text;
+                if (!string.IsNullOrEmpty(Argu.Text))
+                {
+                    p.StartInfo.Arguments = Argu.Text;
+                }
                 p.Start();
                 p.WaitForExit();
                 writeResult(p.StandardOutput.ReadToEnd());
