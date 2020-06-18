@@ -62,7 +62,10 @@ namespace ProcessExe
                 }
                 p.Start();
                 p.WaitForExit();
-                writeResult(p.StandardOutput.ReadToEnd());
+                while (!p.StandardOutput.EndOfStream)
+                {
+                    writeResult(p.StandardOutput.ReadLine());
+                }
                 writeResult(now + "-[" + processName + "]執行結束...");
                 writeResult(now + "-[" + processName + "]應用程式結束代碼：" + p.ExitCode.ToString());
                 writeResult("------------------------------------------------------------------------");
